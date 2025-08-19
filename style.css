@@ -1,0 +1,85 @@
+body {
+    background-color: pink;
+    margin: 0;
+}
+
+.dialogue {
+    color:deeppink;
+    font-family: "Bricolage Grotesque", sans-serif;
+    margin-right: 15%;
+
+}
+.answer {
+    color:#A3044C;
+    font-family: "Bricolage Grotesque", sans-serif;
+    display: flex;
+    margin-top: 5%;
+    justify-content: end;
+    margin-right: 15%;
+
+}
+.answer1 {
+    color:#A3044C;
+    font-family: "Bricolage Grotesque", sans-serif;
+    display: flex;
+    margin-top: 2%;
+    justify-content: end;
+    margin-right: 10%;
+
+}
+
+.answer1:hover{
+    color:#4D0218;
+    transition: color 0.3s ease-in-out;
+    cursor: pointer;
+    animation: agitado 0.15s infinite;
+
+}
+
+@keyframes agitado {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.1deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-0.1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes agitado0 {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(1px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.mymelo {
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: flex-start; 
+  width: 60vw;
+  height: 60vw;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
