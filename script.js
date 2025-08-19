@@ -5,9 +5,63 @@ const myMeloReact = [
   "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa3.png",
   "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa4.png",
   "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa5.png",
-  "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa6.png"
+  "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa6.png",
+  "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymelo2t.png",
+  "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa8.png",
+  "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymeloa9.png"
 ];
 
+const myMeloHelp = [
+  {
+    text: "Sure! Let's try together and see what we can do :). We can take notes so you can keep track of the way you are feeling now :D. Let's try to narrow it down, do you feel more...", //nodo 1
+    answers:[
+      {text: "High energy", faceIndex: 0, next:1},
+      {text: "Low energy", faceIndex: 4, next:2},
+      {text: "Neutral energy", faceIndex: 1, next:3},
+    ]
+  },
+  {
+    text: "Alright, feeling on a rush, eh :D? Do you feel pleased or unpleased with all this energy?", //nodo 1
+    answers:[    
+    {text: "Pleased", faceIndex: 7, next: 4},
+    {text: "Unpleased", faceIndex: 5, next:5},
+    ]
+  },
+  {
+    text: "Ohh, low battery :0? Do you feel calm or uncomfortable?", //nodo 2
+    answers:[
+      {text: "Calm", faceIndex: 7, next: 6},
+      {text: "uncomfortable", faceIndex: 5, next: 7},
+    ]
+  },
+  {
+    text: "Just hanging in there, eh? What's going on :)?", //nodo 3
+    answers:[
+      {text: "Feeling kinda down", faceIndex: 3, next: 8},
+      {text: "Feeling alright", faceIndex: 1, next: 9},
+    ]
+  },
+  {
+    text: "Nice! :D All pumped up!! Which of these sounds more like you right now?", //nodo 4
+    answers:[
+      {text: "Excited -I'm feeling nice for an upcoming event", faceIndex:0, next: 10},
+      {text: "Euphoric -I feel great! Just really happy!", faceIndex:7, next: 10},
+      {text: "Inspired -I'm looking forward to making something of my own!", faceIndex:0, next: 10},
+      {text: "Pleasantly surprised -Something unexpected happened and it makes me really happy!", faceIndex: 0, next: 10},
+      {text: "Cheerful -I just did something really funny, I can't stop laughing and smiling!", faceIndex: 7, next: 10},
+    ]
+  },
+  {
+    text: "Oh, sorry to hear that :( Which of these sounds more like you right now?", //nodo 5
+    answers: [
+      {text: "Enraged -Something is really bugging me off!", faceIndex:9, next: 10},
+      {text: "Anxious -I can't stop thinking about something...", faceIndex:5, next: 10},
+      {text: "Frustrated -I can't do anything right!", faceIndex:8, next: 10},
+      {text: "Defensive -I don't deserve the way people are treating me, it's not fair!", faceIndex: 5, next: 10},
+      {text: "Panicked -Something really threw me off and I am having trouble staying on track",faceIndex: 6, next: 10},
+    ]
+  }
+  ]
 const dialogues = [
   {
     text: "Hi :DDD. How are you feeling today?",
@@ -17,7 +71,8 @@ const dialogues = [
       { text: "Feeling uneasy", faceIndex: 2, next: 3 },
       { text: "Struggling with the day", faceIndex: 3, next: 4 },
       { text: "Not feeling like myself today", faceIndex: 4, next: 5 },
-      { text: "Barely keeping it together", faceIndex: 5, next: 6 }
+      { text: "Barely keeping it together", faceIndex: 5, next: 6 },
+      {text: "I need help putting my feelings into words", faceIndex: 7, next: {map: myMeloHelp, index: 0}}
     ]
   },
   {
@@ -102,8 +157,8 @@ myMeloReact.forEach((url, index) => {
 const dialogueEl = document.querySelector(".dialogue");
 const answersContainer = document.querySelector(".mymelotext");
 
-function showDialogue(index) {
-  const node = dialogues[index];
+function showDialogue(index, map = dialogues) {
+  const node = map[index];
   
   // Update Melody’s line
   dialogueEl.textContent = node.text;
@@ -123,7 +178,14 @@ function showDialogue(index) {
 
     h2.addEventListener("click", () => {
         document.getElementById("melodystart").src = myMeloReact[answer.faceIndex];
-      showDialogue(answer.next); // jump to next node
+if (typeof answer.next === "number") {
+        showDialogue(answer.next, map);
+      }
+      // if next is an object → jump to another map
+      else if (typeof answer.next === "object") {
+        showDialogue(answer.next.index, answer.next.map);
+      }
+      
     });
 
     answersContainer.appendChild(h2);
@@ -131,7 +193,7 @@ function showDialogue(index) {
 }
 
 const resetBtn = document.getElementById("resetBtn"); // NEW
-resetBtn.textContent = "🔄 Reset"; // NEW
+resetBtn.textContent = "Reset"; // NEW
 resetBtn.className = "reset-btn"; // NEW (style it in CSS)
 
 // NEW: Reset button logic
@@ -140,12 +202,12 @@ resetBtn.addEventListener("click", () => { // NEW
 }); // NEW
 
 // Start with the first dialogue
-showDialogue(0);
+showDialogue(0, dialogues);
 
 
 const melody = document.getElementById("melodystart");
 let currentFace = myMeloReact[1]; // start happy
-let blinkFace = "https://raw.githubusercontent.com/cCalic04/MyMeloApoyo/refs/heads/main/mymelo2t.png"; 
+let blinkFace = myMeloReact[7]; 
 
 melody.src = currentFace;
 
